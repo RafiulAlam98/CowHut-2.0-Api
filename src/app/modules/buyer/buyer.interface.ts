@@ -3,7 +3,6 @@ import { UserName } from '../../../interface/username'
 
 export type IBuyer = {
   buyerId: string
-
   name: UserName
   phoneNumber: string
   address: string

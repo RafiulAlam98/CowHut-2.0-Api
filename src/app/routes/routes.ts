@@ -6,6 +6,10 @@ import { UserRoutes } from '../modules/users/user.route'
 const router = express.Router()
 const moduleRoutes = [
   {
+    path: '/auth/signup',
+    route: UserRoutes.router,
+  },
+  {
     path: '/users',
     route: UserRoutes.router,
   },

@@ -25,12 +25,15 @@ export const generateSellerId = async (): Promise<string> => {
 //Generate Buyer Id
 
 export const findLastBuyerId = async (): Promise<string | undefined> => {
-  const lastBuyer = await User.findOne({ role: 'buyer' }, { id: 1, _id: 0 })
+  const lastBuyerId = await User.findOne(
+    { role: 'buyer' },
+    { userId: 1, _id: 0 },
+  )
     .sort({
       createdAt: -1,
     })
     .lean()
-  return lastBuyer?.userId ? lastBuyer.userId.substring(2) : undefined
+  return lastBuyerId?.userId ? lastBuyerId.userId.substring(2) : undefined
 }
 
 export const generateBuyerId = async (): Promise<string> => {
