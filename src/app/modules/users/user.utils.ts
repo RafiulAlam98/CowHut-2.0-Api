@@ -23,7 +23,6 @@ export const generateSellerId = async (): Promise<string> => {
 }
 
 //Generate Buyer Id
-
 export const findLastBuyerId = async (): Promise<string | undefined> => {
   const lastBuyerId = await User.findOne(
     { role: 'buyer' },
@@ -40,6 +39,27 @@ export const generateBuyerId = async (): Promise<string> => {
   const currentId = (await findLastBuyerId()) || (0).toString().padStart(5, '0')
   let incrementedId = (parseInt(currentId) + 1).toString().padStart(5, '0')
   incrementedId = `B-${incrementedId}`
+
+  return incrementedId
+}
+
+// generate admin
+export const findLastAdminId = async (): Promise<string | undefined> => {
+  const lastAdminId = await User.findOne(
+    { role: 'admin' },
+    { userId: 1, _id: 0 },
+  )
+    .sort({
+      createdAt: -1,
+    })
+    .lean()
+  return lastAdminId?.userId ? lastAdminId.userId.substring(2) : undefined
+}
+
+export const generateAdminId = async (): Promise<string> => {
+  const currentId = (await findLastAdminId()) || (0).toString().padStart(5, '0')
+  let incrementedId = (parseInt(currentId) + 1).toString().padStart(5, '0')
+  incrementedId = `A-${incrementedId}`
 
   return incrementedId
 }

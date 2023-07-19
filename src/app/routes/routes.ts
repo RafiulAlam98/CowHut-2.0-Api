@@ -24,6 +24,10 @@ const moduleRoutes = [
     route: BuyerRoutes.router,
   },
   {
+    path: '/admins',
+    route: UserRoutes.router,
+  },
+  {
     path: '/cows',
     route: CowRoutes.router,
   },

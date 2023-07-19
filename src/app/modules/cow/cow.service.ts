@@ -44,6 +44,9 @@ const getAllCowsService = async (
     })
   }
 
+  const whereConditions =
+    andConditions.length > 0 ? { $and: andConditions } : {}
+
   const { page, skip, limit, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(paginationOptions)
 
@@ -52,7 +55,7 @@ const getAllCowsService = async (
   if (sortBy && sortOrder) {
     sortConditions[sortBy] = sortOrder
   }
-  const result = await Cow.find({ $and: andConditions })
+  const result = await Cow.find(whereConditions)
     .sort(sortConditions)
     .skip(skip)
     .limit(limit)

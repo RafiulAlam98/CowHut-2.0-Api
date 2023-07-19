@@ -2,13 +2,19 @@ import httpStatus from 'http-status'
 import mongoose from 'mongoose'
 import config from '../../../config'
 import ApiError from '../../errors/ApiError'
+import { IAdmin } from '../admin/admin.interface'
+import { Admin } from '../admin/admin.model'
 import { IBuyer } from '../buyer/buyer.interface'
 import { Buyer } from '../buyer/buyer.model'
 import { ISeller } from '../seller/seller.interface'
 import { Seller } from '../seller/seller.model'
 import { IUser } from './user.interface'
 import { User } from './user.model'
-import { generateBuyerId, generateSellerId } from './user.utils'
+import {
+  generateAdminId,
+  generateBuyerId,
+  generateSellerId,
+} from './user.utils'
 
 //seller service
 const createSellerService = async (
@@ -122,6 +128,60 @@ const createBuyerService = async (
   return newAllUserData
 }
 
+// admin service
+const createAdmin = async (
+  admin: IAdmin,
+  user: IUser,
+): Promise<IUser | null> => {
+  if (!user.password) {
+    user.password = config.password as string
+  }
+
+  user.role = 'admin'
+
+  let newAllUserData = null
+
+  const session = await mongoose.startSession()
+
+  try {
+    session.startTransaction()
+    const id = await generateAdminId()
+    console.log(id)
+    user.userId = id
+    admin.adminId = id
+
+    const newAdmin = await Admin.create([admin], { session })
+    if (!newAdmin) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create admin')
+    }
+
+    user.admin = newAdmin[0]._id
+
+    console.log(user)
+    const newUser = await User.create([user], { session })
+    if (!newUser) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create a User')
+    }
+
+    newAllUserData = newUser[0]
+
+    await session.commitTransaction()
+    await session.endSession()
+  } catch (error) {
+    await session.abortTransaction()
+    await session.endSession()
+    throw error
+  }
+  if (newAllUserData) {
+    newAllUserData = await User.findOne({
+      userId: newAllUserData.userId,
+    }).populate({
+      path: 'admin',
+    })
+  }
+  return newAllUserData
+}
+
 //get all users
 const getAllUserService = async () => {
   const result = await User.find({})
@@ -139,4 +199,5 @@ export const UserService = {
   createBuyerService,
   getAllUserService,
   getSingleUser,
+  createAdmin,
 }

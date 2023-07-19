@@ -6,6 +6,7 @@ import { UserService } from './user.service'
 
 const createSeller = catchAsync(async (req: Request, res: Response) => {
   const { seller, ...user } = req.body
+  console.log(seller, user)
   const result = await UserService.createSellerService(seller, user)
 
   sendResponse(res, {
@@ -24,6 +25,18 @@ const createBuyer = catchAsync(async (req: Request, res: Response) => {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Buyer created successfully',
+    data: result,
+  })
+})
+
+const createAdmin = catchAsync(async (req: Request, res: Response) => {
+  const { admin, ...user } = req.body
+
+  const result = await UserService.createAdmin(admin, user)
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Admin created successfully',
     data: result,
   })
 })
@@ -54,4 +67,5 @@ export const UserController = {
   createBuyer,
   getAllUsers,
   getSingleUser,
+  createAdmin,
 }
