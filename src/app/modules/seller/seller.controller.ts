@@ -24,7 +24,32 @@ const getSingleSeller = catchAsync(async (req: Request, res: Response) => {
     data: result,
   })
 })
+
+const updateSeller = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id
+
+  const result = await SellerService.updateSellerService(id, req.body)
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Seller updated successfully',
+    data: result,
+  })
+})
+
+const deleteSeller = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id
+  const result = await SellerService.deleteSellerService(id)
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Seller deleted successfully',
+    data: result,
+  })
+})
 export const SellerController = {
   getAllSeller,
   getSingleSeller,
+  updateSeller,
+  deleteSeller,
 }
