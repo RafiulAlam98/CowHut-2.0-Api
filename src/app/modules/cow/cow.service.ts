@@ -6,7 +6,8 @@ import {
   IPaginationOptions,
 } from '../../../interface/pagination'
 import ApiError from '../../errors/ApiError'
-import { ICow } from './cow.interface'
+import { cowSearchableFields } from './cow.constant'
+import { ICow, ICowFilters } from './cow.interface'
 import { Cow } from './cow.model'
 
 const createCowService = async (cow: ICow): Promise<ICow> => {
@@ -18,8 +19,31 @@ const createCowService = async (cow: ICow): Promise<ICow> => {
 }
 
 const getAllCowsService = async (
+  filters: ICowFilters,
   paginationOptions: IPaginationOptions,
 ): Promise<IGenericResponse<ICow[]>> => {
+  const { searchTerm, ...filtersData } = filters
+
+  const andConditions = []
+  if (searchTerm) {
+    andConditions.push({
+      $or: cowSearchableFields.map(field => ({
+        [field]: {
+          $regex: searchTerm,
+          $options: 'i',
+        },
+      })),
+    })
+  }
+
+  if (Object.keys(filtersData).length) {
+    andConditions.push({
+      $and: Object.entries(filtersData).map(([field, value]) => ({
+        [field]: value,
+      })),
+    })
+  }
+
   const { page, skip, limit, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(paginationOptions)
 
@@ -28,7 +52,10 @@ const getAllCowsService = async (
   if (sortBy && sortOrder) {
     sortConditions[sortBy] = sortOrder
   }
-  const result = await Cow.find().sort(sortConditions).skip(skip).limit(limit)
+  const result = await Cow.find({ $and: andConditions })
+    .sort(sortConditions)
+    .skip(skip)
+    .limit(limit)
   const total = await Cow.countDocuments()
   return {
     meta: {

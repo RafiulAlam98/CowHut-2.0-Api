@@ -23,14 +23,16 @@ export type ICategory = 'Dairy' | 'Beef' | 'Dual Purpose'
 
 export type ICow = {
   name: string
-  age: number
+  age: string
   price: number
   location: ILocations
   breed: IBreed
-  weight: number
+  weight: string
   label?: ILabel
   category: ICategory
   seller: Types.ObjectId | IUser
 }
+
+export type ICowFilters = { searchTerm?: string }
 
 export type CowModel = Model<ICow>

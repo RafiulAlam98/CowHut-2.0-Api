@@ -4,6 +4,7 @@ import { paginationFields } from '../../../constant/paginationFields'
 import { catchAsync } from '../../../shared/catchAsync'
 import { pick } from '../../../shared/pick'
 import { sendResponse } from '../../../shared/sendResponse'
+import { cowFilterableFields } from './cow.constant'
 import { ICow } from './cow.interface'
 import { CowService } from './cow.service'
 
@@ -20,7 +21,8 @@ const createCowController = catchAsync(async (req, res) => {
 
 const getAllCowsController = catchAsync(async (req: Request, res: Response) => {
   const paginationOptions = pick(req.query, paginationFields)
-  const result = await CowService.getAllCowsService(paginationOptions)
+  const filters = pick(req.query, cowFilterableFields)
+  const result = await CowService.getAllCowsService(filters, paginationOptions)
   sendResponse<ICow[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
