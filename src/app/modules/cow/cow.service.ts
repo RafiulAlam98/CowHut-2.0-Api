@@ -1,4 +1,9 @@
 import httpStatus from 'http-status'
+import { paginationHelpers } from '../../../helpers/paginationHelper'
+import {
+  IGenericResponse,
+  IPaginationOptions,
+} from '../../../interface/pagination'
 import ApiError from '../../errors/ApiError'
 import { ICow } from './cow.interface'
 import { Cow } from './cow.model'
@@ -11,9 +16,21 @@ const createCowService = async (cow: ICow): Promise<ICow> => {
   return createdCowService
 }
 
-const getAllCowsService = async () => {
-  const result = await Cow.find()
-  return result
+const getAllCowsService = async (
+  paginationOptions: IPaginationOptions,
+): Promise<IGenericResponse<ICow[]>> => {
+  const { page, skip, limit } =
+    paginationHelpers.calculatePagination(paginationOptions)
+  const result = await Cow.find().sort().skip(skip).limit(limit)
+  const total = await Cow.countDocuments()
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+    },
+    data: result,
+  }
 }
 
 export const getSingleCowService = async (id: string): Promise<ICow | null> => {

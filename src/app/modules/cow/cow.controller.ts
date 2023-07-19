@@ -1,7 +1,10 @@
 import { Request, Response } from 'express'
 import httpStatus from 'http-status'
+import { paginationFields } from '../../../constant/paginationFields'
 import { catchAsync } from '../../../shared/catchAsync'
+import { pick } from '../../../shared/pick'
 import { sendResponse } from '../../../shared/sendResponse'
+import { ICow } from './cow.interface'
 import { CowService } from './cow.service'
 
 const createCowController = catchAsync(async (req, res) => {
@@ -16,14 +19,17 @@ const createCowController = catchAsync(async (req, res) => {
 })
 
 const getAllCowsController = catchAsync(async (req: Request, res: Response) => {
-  const result = await CowService.getAllCowsService()
-  sendResponse(res, {
+  const paginationOptions = pick(req.query, paginationFields)
+  const result = await CowService.getAllCowsService(paginationOptions)
+  sendResponse<ICow[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Cow retrieved successfully!',
-    data: result,
+    meta: result.meta,
+    data: result.data,
   })
 })
+
 const getSingleCowController = catchAsync(async (req, res) => {
   const id = req.params.id
   const result = await CowService.getSingleCowService(id)
