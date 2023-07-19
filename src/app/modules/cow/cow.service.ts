@@ -1,4 +1,5 @@
 import httpStatus from 'http-status'
+import { SortOrder } from 'mongoose'
 import { paginationHelpers } from '../../../helpers/paginationHelper'
 import {
   IGenericResponse,
@@ -19,9 +20,15 @@ const createCowService = async (cow: ICow): Promise<ICow> => {
 const getAllCowsService = async (
   paginationOptions: IPaginationOptions,
 ): Promise<IGenericResponse<ICow[]>> => {
-  const { page, skip, limit } =
+  const { page, skip, limit, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(paginationOptions)
-  const result = await Cow.find().sort().skip(skip).limit(limit)
+
+  const sortConditions: { [key: string]: SortOrder } = {}
+
+  if (sortBy && sortOrder) {
+    sortConditions[sortBy] = sortOrder
+  }
+  const result = await Cow.find().sort(sortConditions).skip(skip).limit(limit)
   const total = await Cow.countDocuments()
   return {
     meta: {
