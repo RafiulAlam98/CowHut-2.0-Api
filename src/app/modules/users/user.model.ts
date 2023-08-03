@@ -11,13 +11,23 @@ const UserSchema = new Schema<IUser>(
       required: true,
       unique: true,
     },
+    phoneNumber: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     password: {
       type: String,
       required: true,
+      select: 0,
     },
     role: {
       type: String,
       required: true,
+    },
+    needsPasswordChange: {
+      type: Boolean,
+      default: true,
     },
     seller: {
       type: Schema.Types.ObjectId,

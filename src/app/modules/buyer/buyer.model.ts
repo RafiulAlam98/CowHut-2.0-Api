@@ -21,11 +21,7 @@ export const BuyerSchema = new Schema<IBuyer, BuyerModel>(
       },
       required: true,
     },
-    phoneNumber: {
-      type: String,
-      required: true,
-      unique: true,
-    },
+
     address: {
       type: String,
       required: true,

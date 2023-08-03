@@ -146,7 +146,7 @@ const createAdmin = async (
   try {
     session.startTransaction()
     const id = await generateAdminId()
-    console.log(id)
+
     user.userId = id
     admin.adminId = id
 
@@ -157,7 +157,6 @@ const createAdmin = async (
 
     user.admin = newAdmin[0]._id
 
-    console.log(user)
     const newUser = await User.create([user], { session })
     if (!newUser) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create a User')
