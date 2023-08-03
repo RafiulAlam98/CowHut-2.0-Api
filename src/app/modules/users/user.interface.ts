@@ -13,13 +13,13 @@ export type IUser = {
   buyer: Types.ObjectId | IBuyer
   admin: Types.ObjectId | IAdmin
 }
+
 export type UserModel = {
-  isUserExist(
+  isUserExists(
     phoneNumber: string,
   ): Promise<
     Pick<IUser, 'phoneNumber' | 'password' | 'needsPasswordChange' | 'role'>
   >
-
   isPasswordMatched(
     givenPassword: string,
     savedPassword: string,

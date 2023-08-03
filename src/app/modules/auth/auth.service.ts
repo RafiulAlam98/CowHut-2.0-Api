@@ -1,33 +1,48 @@
-import bcrypt from 'bcrypt'
 import httpStatus from 'http-status'
+import { Secret } from 'jsonwebtoken'
+import config from '../../../config'
+import { jwtHelpers } from '../../../helpers/jwtHelpers'
 import ApiError from '../../errors/ApiError'
 import { User } from '../users/user.model'
 import { IUserLogin } from './auth.interface'
 
 const loginUser = async (payload: IUserLogin) => {
-  const { phoneNumber, password } = payload
+  const { phone, password } = payload
 
   // check user exist
-  const isUserExist = User.findOne(
-    { phoneNumber },
-    { phoneNumber: 1, password: 1, needsPasswordChange: 1 },
-  ).lean()
-
-  if (!isUserExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'User does not found')
+  const isUserExists = await User.isUserExists(phone)
+  if (!isUserExists) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist')
   }
 
-  console.log(isUserExist)
+  //matched password
+  if (
+    isUserExists?.password &&
+    !(await User.isPasswordMatched(password, isUserExists?.password))
+  ) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Password is incorrect')
+  }
 
-  //check password
-  const isPasswordMatched = await bcrypt.compare(
-    password,
-    isUserExist?.password,
+  const { phoneNumber, role, needsPasswordChange } = isUserExists
+
+  // create access token
+  const accessToken = jwtHelpers.createToken(
+    { phoneNumber, role },
+    config.jwt.secret as Secret,
+    config.jwt.secret_expire_in as string,
   )
 
-  //create access token
+  const refreshToken = jwtHelpers.createToken(
+    { phoneNumber, role },
+    config.jwt.refresh_secret as Secret,
+    config.jwt.refresh_secret_expire_in as string,
+  )
 
-  return {}
+  return {
+    accessToken,
+    refreshToken,
+    needsPasswordChange,
+  }
 }
 export const AuthService = {
   loginUser,

@@ -1,4 +1,4 @@
 export type IUserLogin = {
-  phoneNumber: string
+  phone: string
   password: string
 }

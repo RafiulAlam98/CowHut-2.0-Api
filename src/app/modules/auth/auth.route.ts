@@ -3,7 +3,7 @@ import { AuthController } from './auth.controller'
 
 const router = express.Router()
 
-router.get('/login', AuthController.loginUser)
+router.put('/login', AuthController.loginUser)
 
 export const AuthRoutes = {
   router,
