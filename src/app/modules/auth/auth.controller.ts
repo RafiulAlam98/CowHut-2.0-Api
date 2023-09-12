@@ -3,6 +3,7 @@ import httpStatus from 'http-status'
 import config from '../../../config'
 import { catchAsync } from '../../../shared/catchAsync'
 import { sendResponse } from '../../../shared/sendResponse'
+import { IRefreshTokenResponse } from './auth.interface'
 import { AuthService } from './auth.service'
 
 const loginUser = catchAsync(async (req: Request, res: Response) => {
@@ -14,7 +15,7 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
     secure: config.env === 'production',
     httpOnly: true,
   }
-  res.cookie('refresh-token', refreshToken, cookies)
+  res.cookie('refreshToken', refreshToken, cookies)
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -24,6 +25,23 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
   })
 })
 
+const refreshTokenController = catchAsync(
+  async (req: Request, res: Response) => {
+    const { refreshToken } = req.cookies
+    console.log('req.body')
+
+    const result = await AuthService.refreshTokenService(refreshToken)
+
+    sendResponse<IRefreshTokenResponse>(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'User Logged in successfully',
+      data: result,
+    })
+  },
+)
+
 export const AuthController = {
   loginUser,
+  refreshTokenController,
 }
