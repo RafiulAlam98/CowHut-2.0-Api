@@ -42,6 +42,7 @@ const loginUser = async (payload: IUserLogin) => {
     accessToken,
     refreshToken,
     needsPasswordChange,
+    role,
   }
 }
 

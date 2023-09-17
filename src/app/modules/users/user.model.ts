@@ -58,7 +58,7 @@ UserSchema.statics.isUserExists = async function (
 > | null> {
   return await User.findOne(
     { phoneNumber },
-    { phoneNumber: 1, password: 1, needsPasswordChange: 1 },
+    { phoneNumber: 1, password: 1, needsPasswordChange: 1, role: 1 },
   )
 }
 

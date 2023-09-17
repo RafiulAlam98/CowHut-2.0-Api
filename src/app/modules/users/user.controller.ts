@@ -41,8 +41,6 @@ const createAdmin = catchAsync(async (req: Request, res: Response) => {
 })
 
 const getAllUsers = catchAsync(async (req: Request, res: Response) => {
-  console.log(req.headers.authorization)
-  console.log(req.user)
   const result = await UserService.getAllUserService()
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -77,6 +75,7 @@ const userProfile = catchAsync(async (req: Request, res: Response) => {
 
 const updateUserProfile = catchAsync(async (req: Request, res: Response) => {
   const { user } = req
+
   const result = await UserService.updateUserProfile(user, req.body)
   sendResponse(res, {
     success: true,

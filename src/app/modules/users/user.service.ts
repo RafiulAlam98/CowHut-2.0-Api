@@ -201,26 +201,9 @@ const userProfile = async (user: JwtPayload | null) => {
   if (!user) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Unauthorized')
   }
-  let result
+  const result = await User.find({ phoneNumber: user.phoneNumber })
 
-  if (user.role === ENUM_USER_ROLE.BUYER) {
-    const buyer = await User.findOne({ phoneNumber: user.phoneNumber })
-    if (!buyer) {
-      throw new ApiError(httpStatus.NOT_FOUND, 'Buyer not found')
-    }
-    result = await User.find({ buyer: buyer.buyer }).populate('buyer')
-  } else if (user.role === ENUM_USER_ROLE.SELLER) {
-    const seller = await User.findOne({ phoneNumber: user.phoneNumber })
-    if (!seller) {
-      throw new ApiError(httpStatus.NOT_FOUND, 'seller not found')
-    }
-    result = await User.find({ seller: seller.seller }).populate('seller')
-  } else if (user.role === ENUM_USER_ROLE.ADMIN) {
-    result = await Admin.findOne({ phoneNumber: user.phoneNumber })
-    if (!result) {
-      throw new ApiError(httpStatus.NOT_FOUND, 'admin not found')
-    }
-  }
+
 
   return result
 }
