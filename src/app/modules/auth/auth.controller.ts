@@ -28,14 +28,12 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
 const refreshTokenController = catchAsync(
   async (req: Request, res: Response) => {
     const { refreshToken } = req.cookies
-    console.log('req.body')
-
     const result = await AuthService.refreshTokenService(refreshToken)
 
     sendResponse<IRefreshTokenResponse>(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'User Logged in successfully',
+      message: 'New access token generated successfully !',
       data: result,
     })
   },

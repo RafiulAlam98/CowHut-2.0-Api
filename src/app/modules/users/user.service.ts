@@ -1,6 +1,10 @@
+import bcrypt from 'bcrypt'
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status'
+import { JwtPayload } from 'jsonwebtoken'
 import mongoose from 'mongoose'
 import config from '../../../config'
+import { ENUM_USER_ROLE } from '../../../enums/user'
 import ApiError from '../../errors/ApiError'
 import { IAdmin } from '../admin/admin.interface'
 import { Admin } from '../admin/admin.model'
@@ -193,10 +197,96 @@ const getSingleUser = async (id: string) => {
   return result
 }
 
+const userProfile = async (user: JwtPayload | null) => {
+  if (!user) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Unauthorized')
+  }
+  let result
+
+  if (user.role === ENUM_USER_ROLE.BUYER) {
+    const buyer = await User.findOne({ phoneNumber: user.phoneNumber })
+    if (!buyer) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'Buyer not found')
+    }
+    result = await User.find({ buyer: buyer.buyer }).populate('buyer')
+  } else if (user.role === ENUM_USER_ROLE.SELLER) {
+    const seller = await User.findOne({ phoneNumber: user.phoneNumber })
+    if (!seller) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'seller not found')
+    }
+    result = await User.find({ seller: seller.seller }).populate('seller')
+  } else if (user.role === ENUM_USER_ROLE.ADMIN) {
+    result = await Admin.findOne({ phoneNumber: user.phoneNumber })
+    if (!result) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'admin not found')
+    }
+  }
+
+  return result
+}
+
+const updateUserProfile = async (user: JwtPayload | null, payload: any) => {
+  if (!user) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Unauthorized')
+  }
+
+  if (payload.password) {
+    const hashedPassword = await bcrypt.hash(
+      payload.password,
+      Number(config.bcrypt_salt_rounds),
+    )
+    payload.password = hashedPassword
+  }
+
+  let result
+
+  if (user.role === ENUM_USER_ROLE.BUYER) {
+    const buyer = await User.findOne({ phoneNumber: user.phoneNumber })
+    if (!buyer) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'Buyer not found')
+    }
+
+    result = await User.findOneAndUpdate(
+      { phoneNumber: user.phoneNumber },
+      { password: payload.password },
+      { new: true },
+    ).populate('buyer')
+    const id = buyer?.buyer
+    await Buyer.findByIdAndUpdate({ _id: id }, payload, {
+      new: true,
+    })
+  } else if (user.role === ENUM_USER_ROLE.SELLER) {
+    const seller = await User.findOne({ phoneNumber: user.phoneNumber })
+    if (!seller) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'seller not found')
+    }
+
+    result = await User.findOneAndUpdate(
+      { phoneNumber: user.phoneNumber },
+      { password: payload.password },
+      { new: true },
+    ).populate('seller')
+    const id = seller?.seller
+    await Seller.findByIdAndUpdate({ _id: id }, payload, {
+      new: true,
+    })
+  } else if (user.role === ENUM_USER_ROLE.ADMIN) {
+    result = await Admin.findOneAndUpdate(
+      { phoneNumber: user.phoneNumber },
+      payload,
+      { new: true },
+    )
+  }
+
+  return result
+}
+
 export const UserService = {
   createSellerService,
   createBuyerService,
   getAllUserService,
   getSingleUser,
   createAdmin,
+  updateUserProfile,
+  userProfile,
 }
