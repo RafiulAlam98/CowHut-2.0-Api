@@ -26,51 +26,51 @@ To access protected endpoints, you need to authenticate using JSON Web Tokens (J
 
 ### Cows
 
-- `GET /cows`: Get a list of all cows.
-- `GET /cows/:id`: Get details of a specific cow.
-- `POST /cows/addcows`: Add a new cow.
-- `PUT /cows/:id`: Update details of a specific cow.
-- `DELETE /cows/:id`: Delete a specific cow.
+- `GET https://online-cow-service.vercel.app/api/v1/cows`: Get a list of all cows.
+- `GET https://online-cow-service.vercel.app/api/v1/cows/:id`: Get details of a specific cow.
+- `POST https://online-cow-service.vercel.app/api/v1/cows/addcows`: Add a new cow.
+- `PUT https://online-cow-service.vercel.app/api/v1/cows/:id`: Update details of a specific cow.
+- `DELETE https://online-cow-service.vercel.app/api/v1/cows/:id`: Delete a specific cow.
   
 ### Seller
 
-- `GET /seller`: Get a list of all seller.
-- `GET /seller/:id`: Get details of a specific seller.
-- `POST /auth/signup/create-seller`: Add a new seller.
-- `PUT /seller/:id`: Update details of a specific seller.
-- `DELETE /seller/:id`: Delete a specific seller.
+- `GET https://online-cow-service.vercel.app/api/v1/seller`: Get a list of all seller.
+- `GET https://online-cow-service.vercel.app/api/v1/seller/:id`: Get details of a specific seller.
+- `POST https://online-cow-service.vercel.app/api/v1/auth/signup/create-seller`: Add a new seller.
+- `PUT https://online-cow-service.vercel.app/api/v1/seller/:id`: Update details of a specific seller.
+- `DELETE https://online-cow-service.vercel.app/api/v1/seller/:id`: Delete a specific seller.
   
 ### Buyer
 
-- `GET /buyer`: Get a list of all buyer.
-- `GET /buyer/:id`: Get details of a specific buyer.
-- `POST /auth/signup/create-buyer`: Add a new buyer.
-- `PUT /buyer/:id`: Update details of a specific buyer.
-- `DELETE /buyer/:id`: Delete a specific buyer.
+- `GET https://online-cow-service.vercel.app/api/v1/buyer`: Get a list of all buyer.
+- `GET https://online-cow-service.vercel.app/api/v1/buyer/:id`: Get details of a specific buyer.
+- `POST https://online-cow-service.vercel.app/api/v1/auth/signup/create-buyer`: Add a new buyer.
+- `PUT https://online-cow-service.vercel.app/api/v1/buyer/:id`: Update details of a specific buyer.
+- `DELETE https://online-cow-service.vercel.app/api/v1/buyer/:id`: Delete a specific buyer.
   
 ### Order
 
-- `GET /order`: Get a list of all order.
-- `GET /order/:id`: Get details of a specific order.
-- `POST /order/addOrder`: Add a new order.
-- `PUT /order/:id`: Update details of a specific order.
-- `DELETE /order/:id`: Delete a specific order.
+- `GET https://online-cow-service.vercel.app/api/v1/order`: Get a list of all order.
+- `GET https://online-cow-service.vercel.app/api/v1/order/:id`: Get details of a specific order.
+- `POST https://online-cow-service.vercel.app/api/v1/order/addOrder`: Add a new order.
+- `PUT https://online-cow-service.vercel.app/api/v1/order/:id`: Update details of a specific order.
+- `DELETE https://online-cow-service.vercel.app/api/v1/order/:id`: Delete a specific order.
   
   
 ### Admin
 
-- `GET /admins`: Get a list of all admin.
-- `POST /auth/signup/admins/create-admin`: Add a new Admin.
+- `GET https://online-cow-service.vercel.app/api/v1/admins`: Get a list of all admin.
+- `POST https://online-cow-service.vercel.app/api/v1/auth/signup/admins/create-admin`: Add a new Admin.
 
 ### Auth
 
-- `PUT /auth/login`: User Login.
-- `POST /auth/refresh-token`: Request a refresh token.
+- `PUT https://online-cow-service.vercel.app/api/v1/auth/login`: User Login.
+- `POST https://online-cow-service.vercel.app/api/v1/auth/refresh-token`: Request a refresh token.
 
 ### User
 
-- `GET /users`: Get a list of all user.
-- `GET /users/:id`: Get details of a specific user.
-- `GET /users/profile`: Get a user profile.
-- `PATCH /users/profile`: Update details of a specific user profile.
+- `GET https://online-cow-service.vercel.app/api/v1/users`: Get a list of all user.
+- `GET https://online-cow-service.vercel.app/api/v1/users/:id`: Get details of a specific user.
+- `GET https://online-cow-service.vercel.app/api/v1/users/profile`: Get a user profile.
+- `PATCH https://online-cow-service.vercel.app/api/v1/users/profile`: Update details of a specific user profile.
   
