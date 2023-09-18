@@ -4,10 +4,14 @@ import auth from '../../middlewares/auth'
 import { BuyerController } from './buyer.controller'
 const router = express.Router()
 
-router.get('/:id', BuyerController.getSingleBuyer)
+router.get(
+  '/:id',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.BUYER),
+  BuyerController.getSingleBuyer,
+)
 router.patch('/:id', auth(ENUM_USER_ROLE.ADMIN), BuyerController.updateBuyer)
 router.delete('/:id', auth(ENUM_USER_ROLE.ADMIN), BuyerController.deleteBuyer)
-router.get('/', BuyerController.getAllBuyer)
+router.get('/', auth(ENUM_USER_ROLE.ADMIN), BuyerController.getAllBuyer)
 
 export const BuyerRoutes = {
   router,
