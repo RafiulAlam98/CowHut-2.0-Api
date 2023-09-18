@@ -11,6 +11,7 @@ const loginUser = async (payload: IUserLogin) => {
 
   // check user exist
   const isUserExists = await User.isUserExists(phone)
+  
   if (!isUserExists) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist')
   }
