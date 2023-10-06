@@ -4,9 +4,8 @@ import { catchAsync } from '../../../shared/catchAsync'
 import { sendResponse } from '../../../shared/sendResponse'
 import { OrderService } from './order.service'
 
-const CreateOrder = catchAsync(async (req: Request, res: Response) => {
-  const data = req.body
-  const result = await OrderService.orderCow(data)
+const CreateOrderCow = catchAsync(async (req: Request, res: Response) => {
+  const result = await OrderService.orderCow(req.body)
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -16,17 +15,16 @@ const CreateOrder = catchAsync(async (req: Request, res: Response) => {
   })
 })
 
-const getAllOrder = catchAsync(async (req: Request, res: Response) => {
-  const result = await OrderService.getAllOrderService()
+const getAllOrders = catchAsync(async (req: Request, res: Response) => {
+  const result = await OrderService.getAllOrders()
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Order retrieved successfully',
+    message: 'Order retrieved  successfully',
     data: result,
   })
 })
-
 export const OrderController = {
-  CreateOrder,
-  getAllOrder,
+  getAllOrders,
+  CreateOrderCow,
 }

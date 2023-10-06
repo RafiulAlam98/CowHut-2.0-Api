@@ -1,6 +1,7 @@
 import express from 'express'
 import { AuthRoutes } from '../modules/auth/auth.route'
 import { CowRoutes } from '../modules/cow/cow.routes'
+import { OrderRoutes } from '../modules/order/order.routes'
 import { UserRoutes } from '../modules/users/user.route'
 
 const router = express.Router()
@@ -29,17 +30,12 @@ const moduleRoutes = [
     path: '/cows',
     route: CowRoutes.router,
   },
+  {
+    path: '/orders',
+    route: OrderRoutes.router,
+  },
 
-  // {
-  //   path: '/admins',
-  //   route: AdminRoutes.router,
-  // },
 
-  // {
-  //   path: '/order',
-  //   route: OrderRoutes.router,
-  // },
-  // {
 ]
 
 moduleRoutes.forEach(route => router.use(route.path, route.route))

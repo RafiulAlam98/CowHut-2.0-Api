@@ -9,7 +9,7 @@ export const OrderSchema = new Schema<IOrder, OrderModel>(
     },
     buyer: {
       type: Schema.Types.ObjectId,
-      ref: 'Buyer',
+      ref: 'User',
     },
   },
   {

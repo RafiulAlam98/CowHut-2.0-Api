@@ -5,12 +5,8 @@ import { OrderController } from './order.controller'
 
 const router = express.Router()
 
-router.post(
-  '/addOrder',
-  auth(ENUM_USER_ROLE.BUYER),
-  OrderController.CreateOrder,
-)
-router.get('/', auth(ENUM_USER_ROLE.SELLER), OrderController.getAllOrder)
+router.post('/', auth(ENUM_USER_ROLE.BUYER), OrderController.CreateOrderCow)
+router.get('/', auth(ENUM_USER_ROLE.SELLER), OrderController.getAllOrders)
 
 export const OrderRoutes = {
   router,

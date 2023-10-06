@@ -15,21 +15,17 @@ router.delete(
   UserController.deleteSingleUser,
 )
 
-// router.patch(
-//   '/profile',
-//   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.BUYER, ENUM_USER_ROLE.SELLER),
-//   UserController.updateUserProfile,
-// )
-
-router.get(
-  '/profile',
+router.patch(
+  '/my-profile ',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.BUYER, ENUM_USER_ROLE.SELLER),
-  UserController.userProfile,
+  UserController.updateUserProfile,
 )
 
+router.get(
+  '/my-profile ',
 
-
-
+  UserController.userProfile,
+)
 
 
 export const UserRoutes = {

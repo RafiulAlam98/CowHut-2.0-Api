@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt'
 // import bcrypt from 'bcrypt'
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status'
@@ -5,6 +6,7 @@ import { JwtPayload } from 'jsonwebtoken'
 import mongoose from 'mongoose'
 import config from '../../../config'
 // import { ENUM_USER_ROLE } from '../../../enums/user'
+import { ENUM_USER_ROLE } from '../../../enums/user'
 import ApiError from '../../errors/ApiError'
 import { Admin } from '../admin/admin.model'
 import { Buyer } from '../buyer/buyer.model'
@@ -171,68 +173,69 @@ const userProfile = async (user: JwtPayload | null) => {
   return result
 }
 
-// const updateUserProfile = async (user: JwtPayload | null, payload: any) => {
-//   if (!user) {
-//     throw new ApiError(httpStatus.UNAUTHORIZED, 'Unauthorized')
-//   }
+const updateUserProfile = async (user: JwtPayload | null, payload: any) => {
+  if (!user) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Unauthorized')
+  }
 
-//   if (payload.password) {
-//     const hashedPassword = await bcrypt.hash(
-//       payload.password,
-//       Number(config.bcrypt_salt_rounds),
-//     )
-//     payload.password = hashedPassword
-//   }
+  if (payload.password) {
+    const hashedPassword = await bcrypt.hash(
+      payload.password,
+      Number(config.bcrypt_salt_rounds),
+    )
+    payload.password = hashedPassword
+  }
 
-//   let result
+  let result
 
-//   if (user.role === ENUM_USER_ROLE.BUYER) {
-//     const buyer = await User.findOne({ phoneNumber: user.phoneNumber })
-//     if (!buyer) {
-//       throw new ApiError(httpStatus.NOT_FOUND, 'Buyer not found')
-//     }
+  if (user.role === ENUM_USER_ROLE.BUYER) {
+    const buyer = await User.findOne({ phoneNumber: user.phoneNumber })
+    if (!buyer) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'Buyer not found')
+    }
 
-//     result = await User.findOneAndUpdate(
-//       { phoneNumber: user.phoneNumber },
-//       { password: payload.password },
-//       { new: true },
-//     ).populate('buyer')
-//     const id = buyer?.buyer
-//     await Buyer.findByIdAndUpdate({ _id: id }, payload, {
-//       new: true,
-//     })
-//   } else if (user.role === ENUM_USER_ROLE.SELLER) {
-//     const seller = await User.findOne({ phoneNumber: user.phoneNumber })
-//     if (!seller) {
-//       throw new ApiError(httpStatus.NOT_FOUND, 'seller not found')
-//     }
+    result = await User.findOneAndUpdate(
+      { phoneNumber: user.phoneNumber },
+      { password: payload.password },
+      { new: true },
+    )
 
-//     result = await User.findOneAndUpdate(
-//       { phoneNumber: user.phoneNumber },
-//       { password: payload.password },
-//       { new: true },
-//     ).populate('seller')
-//     const id = seller?.seller
-//     await Seller.findByIdAndUpdate({ _id: id }, payload, {
-//       new: true,
-//     })
-//   } else if (user.role === ENUM_USER_ROLE.ADMIN) {
-//     result = await Admin.findOneAndUpdate(
-//       { phoneNumber: user.phoneNumber },
-//       payload,
-//       { new: true },
-//     )
-//   }
+    const phone = buyer?.phoneNumber
+    await Buyer.findByIdAndUpdate({ phoneNumber: phone }, payload, {
+      new: true,
+    })
+  } else if (user.role === ENUM_USER_ROLE.SELLER) {
+    const seller = await User.findOne({ phoneNumber: user.phoneNumber })
+    if (!seller) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'seller not found')
+    }
 
-//   return result
-// }
+    result = await User.findOneAndUpdate(
+      { phoneNumber: user.phoneNumber },
+      { password: payload.password },
+      { new: true },
+    )
+    const phone = seller?.phoneNumber
+    await Seller.findByIdAndUpdate({ phoneNumber: phone }, payload, {
+      new: true,
+    })
+  } else if (user.role === ENUM_USER_ROLE.ADMIN) {
+    result = await Admin.findOneAndUpdate(
+      { phoneNumber: user.phoneNumber },
+      payload,
+      { new: true },
+    )
+  }
+
+  return result
+}
 
 export const UserService = {
   createUser,
   getAllUserService,
   getSingleUser,
   createAdmin,
-  // updateUserProfile,
+  updateUserProfile,
   userProfile,
   updateSingleUser,
   deleteSingleUserService,
