@@ -46,20 +46,6 @@ const getSingleUser = catchAsync(async (req: Request, res: Response) => {
     data: result,
   })
 })
-
-const userProfile = catchAsync(async (req: Request, res: Response) => {
-  const { user } = req
-
-  const result = await UserService.userProfile(user)
-
-  sendResponse(res, {
-    success: true,
-    statusCode: httpStatus.OK,
-    message: 'User retrieved successfully!',
-    data: result,
-  })
-})
-
 const updateSingleUser = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id
   const updatedData = req.body
@@ -71,6 +57,21 @@ const updateSingleUser = catchAsync(async (req: Request, res: Response) => {
     data: result,
   })
 })
+
+const userProfile = catchAsync(async (req: Request, res: Response) => {
+  const { user } = req
+
+  console.log(req)
+  const result = await UserService.userProfile(user)
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'User retrieved successfully!',
+    data: result,
+  })
+})
+
 
 const deleteSingleUser = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id

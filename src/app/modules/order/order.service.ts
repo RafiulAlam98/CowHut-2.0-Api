@@ -40,6 +40,7 @@ const orderCow = async (order: IOrder) => {
     if (!buyer) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Buyer not found')
     }
+
     // Check if the buyer has enough budget to buy the cow
     if (buyer.budget! < cow.price) {
       throw new ApiError(
@@ -55,8 +56,15 @@ const orderCow = async (order: IOrder) => {
     // Transfer money from buyer to seller
     seller.income! += cow.price
     buyer.budget! -= cow.price
-    await seller.save()
-    await buyer.save()
+
+        console.log('buyer', buyer)
+        console.log('seller', seller)
+        console.log('cow', cow)
+
+        await seller.save()
+        await buyer.save()
+
+
 
     const newOrder = await Order.create(
       {

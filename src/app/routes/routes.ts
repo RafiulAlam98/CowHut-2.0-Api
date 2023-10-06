@@ -8,6 +8,10 @@ const router = express.Router()
 const moduleRoutes = [
   {
     path: '/auth',
+    route: AuthRoutes.router,
+  },
+  {
+    path: '/auth',
     route: UserRoutes.router,
   },
   {
@@ -22,10 +26,7 @@ const moduleRoutes = [
     path: '/admins',
     route: AuthRoutes.router,
   },
-  {
-    path: '/auth',
-    route: AuthRoutes.router,
-  },
+
   {
     path: '/cows',
     route: CowRoutes.router,
@@ -34,8 +35,6 @@ const moduleRoutes = [
     path: '/orders',
     route: OrderRoutes.router,
   },
-
-
 ]
 
 moduleRoutes.forEach(route => router.use(route.path, route.route))

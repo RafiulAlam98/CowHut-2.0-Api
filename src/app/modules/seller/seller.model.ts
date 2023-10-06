@@ -30,7 +30,6 @@ export const SellerSchema = new Schema<ISeller, SellerModel>(
       },
       required: true,
     },
-
     address: {
       type: String,
       required: true,

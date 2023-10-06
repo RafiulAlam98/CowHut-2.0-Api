@@ -27,6 +27,8 @@ const auth =
         throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Token')
       }
 
+
+
       req.user = verifiedUser
 
       //role guard
@@ -34,6 +36,7 @@ const auth =
         throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden')
       }
 
+      console.log(verifiedUser)
       next()
     } catch (error) {
       next(error)

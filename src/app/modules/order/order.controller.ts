@@ -6,7 +6,6 @@ import { OrderService } from './order.service'
 
 const CreateOrderCow = catchAsync(async (req: Request, res: Response) => {
   const result = await OrderService.orderCow(req.body)
-
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
