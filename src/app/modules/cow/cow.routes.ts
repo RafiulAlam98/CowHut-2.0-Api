@@ -4,11 +4,9 @@ import auth from '../../middlewares/auth'
 import { CowController } from './cow.controller'
 
 const router = express.Router()
-router.post(
-  '/addcows',
-  auth(ENUM_USER_ROLE.SELLER),
-  CowController.createCowController,
-)
+
+router.post('/', auth(ENUM_USER_ROLE.SELLER), CowController.createCowController)
+
 router.get(
   '/:id',
   auth(ENUM_USER_ROLE.SELLER, ENUM_USER_ROLE.BUYER, ENUM_USER_ROLE.ADMIN),
