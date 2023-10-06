@@ -7,11 +7,12 @@ import { User } from '../users/user.model'
 import { IRefreshTokenResponse, IUserLogin } from './auth.interface'
 
 const loginUser = async (payload: IUserLogin) => {
-  const { phone, password } = payload
+  const { phoneNumber: phone, password } = payload
+
 
   // check user exist
   const isUserExists = await User.isUserExists(phone)
-  
+
   if (!isUserExists) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist')
   }

@@ -21,7 +21,7 @@ const auth =
       try {
         verifiedUser = jwtHelpers.verifyToken(
           token,
-          config.jwt.refresh_secret as Secret,
+          config.jwt.secret as Secret,
         )
       } catch (error) {
         throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Token')

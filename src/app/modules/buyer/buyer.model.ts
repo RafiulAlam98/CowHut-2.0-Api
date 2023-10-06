@@ -3,10 +3,19 @@ import { BuyerModel, IBuyer } from './buyer.interface'
 
 export const BuyerSchema = new Schema<IBuyer, BuyerModel>(
   {
-    buyerId: {
+    phoneNumber: {
       type: String,
       required: true,
       unique: true,
+    },
+    role: {
+      type: String,
+      enum: ['buyer'],
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
     },
     name: {
       type: {

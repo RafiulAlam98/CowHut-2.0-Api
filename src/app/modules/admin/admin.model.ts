@@ -3,9 +3,9 @@ import { AdminModel, IAdmin } from './admin.interface'
 
 const AdminSchema = new Schema<IAdmin>(
   {
-    adminId: {
+    role: {
       type: String,
-      unique: true,
+      enum: ['admin'],
       required: true,
     },
     name: {
@@ -19,6 +19,10 @@ const AdminSchema = new Schema<IAdmin>(
           required: true,
         },
       },
+      required: true,
+    },
+    phoneNumber: {
+      type: String,
       required: true,
     },
 

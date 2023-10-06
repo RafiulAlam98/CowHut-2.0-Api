@@ -2,7 +2,11 @@ import { Model } from 'mongoose'
 import { UserName } from '../../../interface/username'
 
 export type IBuyer = {
-  buyerId: string
+  _id?: string
+  id: string
+  phoneNumber: string
+  role: 'buyer'
+  password: string
   name: UserName
   address: string
   budget: number

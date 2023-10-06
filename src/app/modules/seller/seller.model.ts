@@ -3,10 +3,19 @@ import { ISeller, SellerModel } from './seller.interface'
 
 export const SellerSchema = new Schema<ISeller, SellerModel>(
   {
-    sellerId: {
+    phoneNumber: {
       type: String,
       required: true,
       unique: true,
+    },
+    role: {
+      type: String,
+      enum: ['seller'],
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
     },
     name: {
       type: {

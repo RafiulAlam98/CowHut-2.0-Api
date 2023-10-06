@@ -2,8 +2,8 @@ import { Model } from 'mongoose'
 import { UserName } from '../../../interface/username'
 
 export type IAdmin = {
-  adminId: string
   name: UserName
+  role: 'admin'
   phoneNumber: string
   address: string
 }
