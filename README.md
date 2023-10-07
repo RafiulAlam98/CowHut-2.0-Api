@@ -38,15 +38,13 @@ To access protected endpoints, you need to authenticate using JSON Web Tokens (J
 - `GET https://online-cow-service.vercel.app/api/v1/orders`: Get a list of all order.
 - `GET https://online-cow-service.vercel.app/api/v1/orders/:id`: Get details of a specific order.
 - `POST https://online-cow-service.vercel.app/api/v1/orders`: Add a new order.
-- `PUT https://online-cow-service.vercel.app/api/v1/orders/:id`: Update details of a specific order.
-- `DELETE https://online-cow-service.vercel.app/api/v1/orders/:id`: Delete a specific order.
-  
+
   
 ### Admin
 
 - `GET https://online-cow-service.vercel.app/api/v1/admins`: Get a list of all admin.
 - `GET https://online-cow-service.vercel.app/api/v1/admins/login`: Admin Login.
-- `POST https://online-cow-service.vercel.app/api/v1/auth/signup/admins/create-admin`: Add a new Admin.
+- `POST https://online-cow-service.vercel.app/api/v1/admins/create-admin`: Add a new Admin.
 
 ### Auth
 
