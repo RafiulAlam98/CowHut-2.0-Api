@@ -11,15 +11,14 @@ const orderCow = async (order: IOrder) => {
   let newOrderData = null
   try {
     session.startTransaction()
-    // Find the cow to be sold
-    //cow:id
-    //buyer:id
+
     const cow = await Cow.findById(order.cow).session(session)
     if (!cow) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Cow not found')
     }
 
     const sellerId = cow.seller
+
     // Check if the cow is available for sale
     if (cow.label !== 'for sale') {
       throw new ApiError(
@@ -57,14 +56,8 @@ const orderCow = async (order: IOrder) => {
     seller.income! += cow.price
     buyer.budget! -= cow.price
 
-        console.log('buyer', buyer)
-        console.log('seller', seller)
-        console.log('cow', cow)
-
-        await seller.save()
-        await buyer.save()
-
-
+    await seller.save()
+    await buyer.save()
 
     const newOrder = await Order.create(
       {

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-this-alias */
 import bcrypt from 'bcrypt'
 import { Schema, model } from 'mongoose'
-import config from '../../../config'
+
 import { IUser, UserModel } from './user.interface'
 
 const UserSchema = new Schema<IUser>(
@@ -85,12 +85,13 @@ UserSchema.statics.isPasswordMatched = async function (
   return await bcrypt.compare(givenPassword, savedPassword)
 }
 
-UserSchema.pre('save', async function () {
-  const user = this
-  user.password = await bcrypt.hash(
-    user.password,
-    Number(config.bcrypt_salt_rounds),
-  )
-})
+// UserSchema.pre('save', async function (next) {
+//   const user = this
+//   user.password = await bcrypt.hash(
+//     user.password,
+//     Number(config.bcrypt_salt_rounds),
+//   )
+//   next()
+// })
 
 export const User = model<IUser, UserModel>('User', UserSchema)

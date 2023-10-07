@@ -5,6 +5,7 @@ export const catchAsync = (payloadFn: RequestHandler) => {
     try {
       await payloadFn(req, res, next)
     } catch (error) {
+      console.log(error)
       next(error)
     }
   }

@@ -15,7 +15,13 @@ import { IUser } from './user.interface'
 import { User } from './user.model'
 
 const createUser = async (payload: IUser) => {
-  const { role } = payload
+  const { role, password } = payload
+  const hashedPassword = await bcrypt.hash(
+    password,
+    Number(config.bcrypt_salt_rounds),
+  )
+  payload.password = hashedPassword
+
   const session = await mongoose.startSession()
   let newUser
 
@@ -27,6 +33,7 @@ const createUser = async (payload: IUser) => {
         throw new ApiError(httpStatus.BAD_REQUEST, 'User Already Exists')
       }
       const newSeller = await Seller.create([payload], { session })
+
       if (!newSeller.length) {
         throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to Create Seller')
       }
@@ -38,6 +45,7 @@ const createUser = async (payload: IUser) => {
         throw new ApiError(httpStatus.BAD_REQUEST, 'User Already Exists')
       }
       const newBuyer = await Buyer.create([payload], { session })
+
       if (!newBuyer.length) {
         throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to Create Buyer')
       }
@@ -49,6 +57,7 @@ const createUser = async (payload: IUser) => {
     }
 
     const result = await User.create([payload], { session })
+
     if (!result.length) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to Create User')
     }

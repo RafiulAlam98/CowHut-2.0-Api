@@ -11,11 +11,11 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthService.loginUser(loginData)
 
   const { refreshToken, ...others } = result
-  const cookies = {
+  const options = {
     secure: config.env === 'production',
     httpOnly: true,
   }
-  res.cookie('refreshToken', refreshToken, cookies)
+  res.cookie('refreshToken', refreshToken, options)
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -28,7 +28,7 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
 const refreshTokenController = catchAsync(
   async (req: Request, res: Response) => {
     const { refreshToken } = req.cookies
-    console.log(refreshToken)
+
     const result = await AuthService.refreshTokenService(refreshToken)
 
     sendResponse<IRefreshTokenResponse>(res, {

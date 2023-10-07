@@ -31,12 +31,13 @@ const auth =
 
       req.user = verifiedUser
 
+      console.log(verifiedUser)
       //role guard
       if (roles.length && !roles.includes(verifiedUser.role)) {
         throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden')
       }
 
-      console.log(verifiedUser)
+
       next()
     } catch (error) {
       next(error)
