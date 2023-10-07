@@ -22,11 +22,7 @@ router.delete(
   auth(ENUM_USER_ROLE.SELLER),
   CowController.deleteSingleCowController,
 )
-router.get(
-  '/',
-  auth(ENUM_USER_ROLE.SELLER, ENUM_USER_ROLE.BUYER, ENUM_USER_ROLE.ADMIN),
-  CowController.getAllCowsController,
-)
+router.get('/', CowController.getAllCowsController)
 
 export const CowRoutes = {
   router,
