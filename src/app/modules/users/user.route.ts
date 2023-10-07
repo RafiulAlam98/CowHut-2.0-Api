@@ -7,11 +7,7 @@ const router = express.Router()
 router.post('/signup', UserController.createUser)
 router.post('/create-admin', UserController.createAdmin)
 router.get('/', auth(ENUM_USER_ROLE.ADMIN), UserController.getAllUsers)
-router.get(
-  '/:id',
-  // auth(ENUM_USER_ROLE.ADMIN),
-  UserController.getSingleUser,
-)
+router.get('/:id', auth(ENUM_USER_ROLE.ADMIN), UserController.getSingleUser)
 router.patch('/:id', UserController.updateSingleUser)
 router.delete(
   '/:id',
@@ -25,11 +21,7 @@ router.patch(
   UserController.updateUserProfile,
 )
 
-router.get(
-  '/my-profile ',
-
-  UserController.userProfile,
-)
+router.get('/my-profile ', UserController.userProfile)
 
 
 export const UserRoutes = {
