@@ -89,7 +89,14 @@ const getAllOrders = async () => {
   const result = await Order.find({}).populate('cow').populate('buyer')
   return result
 }
+
+const getSingleOrder = async (id: string) => {
+  const result = await Order.findById(id).populate('cow').populate('buyer')
+  return result
+}
+
 export const OrderService = {
   orderCow,
   getAllOrders,
+  getSingleOrder,
 }

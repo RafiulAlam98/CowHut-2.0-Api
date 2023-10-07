@@ -23,7 +23,21 @@ const getAllOrders = catchAsync(async (req: Request, res: Response) => {
     data: result,
   })
 })
+
+const getSingleOrder = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params
+  const result = await OrderService.getSingleOrder(id)
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Order is retrieved  successfully',
+    data: result,
+  })
+})
+
+
 export const OrderController = {
   getAllOrders,
   CreateOrderCow,
+  getSingleOrder,
 }
